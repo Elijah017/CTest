@@ -7,7 +7,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "../common.h"
+#include "common.h"
 
 typedef struct _listnode {
   var_t             value;

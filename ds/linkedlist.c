@@ -18,6 +18,12 @@ int linkedlist_append(var_t *node, LinkedList *list) { /*{{{*/
   ln->next = NULL;
 
   if (list->head == NULL) { list->head = ln; }
+  else {
+    ListNode *prev = list->head;
+    while (prev->next != NULL) prev = prev->next;
+
+    prev->next = ln;
+  }
 
   list->length++;
   return 0;

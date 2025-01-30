@@ -8,6 +8,7 @@ int create_var_t(void *value, size_t bytes, void (*delete_value)(void *), var_t 
     return errno;
   }
 
+  memcpy(var->value, value, bytes);
   var->bytes   = bytes;
   var->_delete = delete_value;
   return 0;

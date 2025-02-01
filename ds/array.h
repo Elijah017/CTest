@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "common.h"
+#include "../common.h"
 
 #define ARRAY_SCALE 1.2f
 #define ARRAY_MIN   10
@@ -32,6 +32,7 @@ void* array_get(size_t index, Array *array);
 void array_print(Array *array);
 
 int _array_grow(float scale, Array *array);
+int _array_shrink(float scale, Array *array);
 int _array_shift_right(size_t index, Array *array);
 int _array_shift_left(size_t index, Array *array);
 

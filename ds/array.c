@@ -115,23 +115,7 @@ void* array_get(size_t index, Array *array) {/*{{{*/
   return array->items + (index * array->size);
 } /*}}}*/
 
-int _array_grow(float scale, Array *array) {/*{{{*/
-  if (scale <= 1) { return 1; }
-
-  size_t capacity = array->capacity * scale;
-  void  *temp     = realloc(array->items, array->size * capacity);
-
-  if (temp == NULL) {
-    perror("failed to realloc space for array grow\n");
-    return errno;
-  }
-
-  array->capacity = capacity;
-  array->items    = temp;
-  return 0;
-} /*}}}*/
-
-void array_print(Array *array) {
+void array_print(Array *array) {/*{{{*/
   printf("[ ");
   for (size_t i = 0; i < array->length; i++) {
     char *str;
@@ -150,7 +134,42 @@ void array_print(Array *array) {
     str = NULL;
   }
   printf("]\n");
-}
+} /*}}}*/
+
+int _array_grow(float scale, Array *array) {/*{{{*/
+  if (scale <= 1) { return 1; }
+
+  size_t capacity = array->capacity * scale;
+  void  *temp     = realloc(array->items, array->size * capacity);
+
+  if (temp == NULL) {
+    perror("failed to realloc space for array grow\n");
+    return errno;
+  }
+
+  array->capacity = capacity;
+  array->items    = temp;
+  return 0;
+} /*}}}*/
+
+int _array_shrink(float scale, Array *array) {/*{{{*/
+  if (scale >= 1) { return 1; }
+
+  size_t capacity = array->capacity * scale;
+
+  if (capacity < array->length) { return 1; }
+
+  void *temp = realloc(array->items, capacity * array->size);
+
+  if (temp == NULL) {
+    perror("failed to shrink array size\n");
+    return errno;
+  }
+
+  array->capacity = capacity;
+  array->items    = temp;
+  return 0;
+} /*}}}*/
 
 int _array_shift_right(size_t index, Array *array) { /*{{{*/
   if ((array->length == array->capacity) && (_array_grow(ARRAY_SCALE, array) != 0)) {
